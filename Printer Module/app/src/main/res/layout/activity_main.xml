@@ -23,19 +23,19 @@
     android:id="@+id/btn_print"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:onClick="printButton"
-    android:text="Print"
+    android:onClick="connectButton"
+    android:text="Connect"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/inputbox"
-    app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView"
+    app:layout_constraintVertical_bias="0.226" />
 
   <TextView
     android:id="@+id/textView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="TextView"
-    app:layout_constraintBottom_toTopOf="@+id/deviceNames"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.498"
     app:layout_constraintStart_toStartOf="parent"
@@ -51,14 +51,5 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/inputbox" />
-
-  <ListView
-    android:id="@+id/deviceNames"
-    android:layout_width="409dp"
-    android:layout_height="159dp"
-    android:layout_marginBottom="1dp"
-    app:layout_constraintBottom_toTopOf="@+id/inputbox"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
