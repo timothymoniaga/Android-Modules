@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -59,11 +60,14 @@ public class MainActivity extends AppCompatActivity {
 
   ArrayAdapter<BluetoothDevice> listAdapter;
   ArrayAdapter<String> deviceNamesAdapter;
+  Boolean connected;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    connected = false;
 
     input = findViewById(R.id.inputbox);
     print = findViewById(R.id.btn_print);
@@ -95,6 +99,27 @@ public class MainActivity extends AppCompatActivity {
   }
 
 
+  public void printButton(View view) {
+    if (connected) {
+      message("! 0 200 200 210 1");
+      message("TEXT 4 0 30 40 Hello World" );
+      message("FORM");
+      message("PRINT");
+
+    }
+  }
+
+  public void message(String message) {
+    try {
+      OutputStream outputStream = bluetoothSocket.getOutputStream();
+      //String message = "! 0 200 200 210 1";
+      byte[] messageBytes = message.getBytes();
+      outputStream.write(messageBytes);
+    } catch (IOException e) {
+      // Handle exception
+    }
+  }
+
   public void connectButton(View view) {
     //startSearching();
     // this one uses the startDiscovery method and it does not work because I cannot get the device name from the devices
@@ -112,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
             bluetoothSocket.connect();
             deviceText.setText("Connected!");
+            connected = true;
             // Connection successful, do something with the socket
           } catch (IOException e) {
             // Connection failed
