@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
   BluetoothSocket bluetoothSocket;
   Set<BluetoothDevice> pairedDevices;
   ArrayList<String> deviceNamesList;
-
   ArrayAdapter<BluetoothDevice> listAdapter;
   ArrayAdapter<String> deviceNamesAdapter;
   Boolean connected;
@@ -101,18 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
   public void printButton(View view) {
     if (connected) {
-      message("! 0 200 200 210 1");
-      message("TEXT 4 0 30 40 Hello World" );
-      message("FORM");
-      message("PRINT");
-
+      message("! 0 200 200 210 1\r\nTEXT 4 0 30 40 Hello World\r\nFORM\r\nPRINT\r\n" );
     }
   }
 
   public void message(String message) {
     try {
       OutputStream outputStream = bluetoothSocket.getOutputStream();
-      //String message = "! 0 200 200 210 1";
       byte[] messageBytes = message.getBytes();
       outputStream.write(messageBytes);
     } catch (IOException e) {
@@ -152,10 +146,6 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  public void setDeviceNames() {
-
-  }
-
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -169,27 +159,6 @@ public class MainActivity extends AppCompatActivity {
         // Permissions denied, show a message to the user
         Toast.makeText(this, "Bluetooth permissions are required to use this app", Toast.LENGTH_SHORT).show();
       }
-    }
-  }
-
-
-  private void startSearching() {
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
-      if (bluetoothAdapter.startDiscovery()) {
-        deviceText.setText("Searching");
-        //BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-      } else {
-        Snackbar.make(findViewById(R.id.device), "Failed to start searching", Snackbar.LENGTH_INDEFINITE)
-          .setAction("Try Again", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              startSearching();
-            }
-          }).show();
-      }
-
-
     }
   }
 
