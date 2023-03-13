@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -50,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
     if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED) {
       pairedDevices = mBluetoothAdapter.getBondedDevices();
       for (BluetoothDevice device : pairedDevices) {
-        String deviceName = device.getName();
-        deviceNamesList.add(deviceName);
-        deviceMap.put(deviceName, device);
-
+        if(device.getBluetoothClass().getMajorDeviceClass() == BluetoothClass.Device.Major.IMAGING) {
+          String deviceName = null;
+          if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            deviceName = device.getAlias();
+          }
+          deviceNamesList.add(deviceName);
+          deviceMap.put(deviceName, device);
+        }
       }
       deviceNamesAdapter.notifyDataSetChanged();
     }
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String deviceName = (String) parent.getItemAtPosition(position);
+
         deviceMAC.setText( "MAC Address for "+ deviceName + " is " + deviceMap.get(deviceName));
       }
     });
