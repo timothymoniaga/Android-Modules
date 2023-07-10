@@ -6,3 +6,6 @@ A personalised printer module made to specifically connect and print 'hello worl
 ## MAC Address
 A basic app that has a list view of all previously bonded devices and when tapped gives the MAC address of the device
 
+## Proverb
+For fun app that translates any saying into a proverb
+
