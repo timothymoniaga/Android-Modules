@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     EditText edtPrompt;
     Button btnTranslate;
 
+    OkHttpClient client;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +39,18 @@ public class MainActivity extends AppCompatActivity {
         txtResponse = findViewById(R.id.textResponse);
         edtPrompt = findViewById(R.id.editTextPrompt);
         btnTranslate = findViewById(R.id.buttonTranslate);
+
+        client = new OkHttpClient();
     }
 
 
 
 
     public void generatePrompt(View view) {
-        String prompt = "I need more time";
 
-        OkHttpClient client = new OkHttpClient();
+        String sentence = edtPrompt.getText().toString();
+        String prompt = "From now on you are a native chinese speaker attempting to relay what I say into some proverb.  I only want the english translation in the response with a brief meaning after. To start I want you to turn this int a proverb: [" + sentence + "]";
+
 
         MediaType mediaType = MediaType.parse("application/json");
 
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         Request request = new Request.Builder()
                 .url("https://api.openai.com/v1/completions")
-                .addHeader("Authorization", "Bearer YOUR_API_KEY")
+                .addHeader("Authorization", Keys.OPEN_AI)
                 .addHeader("Content-Type", "application/json")
                 .post(body)
                 .build();
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                txtResponse.setText(meaning);
                                 // Update UI elements with the translated text and its meaning
                             }
                         });
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    // Handle the response error
+                    txtResponse.setText("Error");
                 }
             }
         });
